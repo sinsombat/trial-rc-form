@@ -23,6 +23,9 @@ class Home extends React.Component {
         </div>
         <ul className="Home-resources">
           <li>
+            <Link to={`/form`}>Form</Link>
+          </li>
+          <li>
             <Link to={`/about`}>About</Link>
           </li>
         </ul>
