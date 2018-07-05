@@ -1,11 +1,10 @@
-import { takeEvery } from 'redux-saga/effects'
-import { INCREMENT_COUNTER } from '../actions'
+import { takeEvery, put } from 'redux-saga/effects'
+import { DECREMENT_COUNTER, decrementSuccess } from '../actions'
 
 export function* counter () {
-  console.log("in saga")
-  yield
+  yield put(decrementSuccess(1));
 }
 
 export default function* counterSaga() {
-  yield takeEvery(INCREMENT_COUNTER, counter)
+  yield takeEvery(DECREMENT_COUNTER, counter)
 }
