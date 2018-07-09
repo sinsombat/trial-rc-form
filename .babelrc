@@ -1,4 +1,11 @@
 {
   "presets": ["razzle/babel"],
-  "plugins": []
+  "plugins": [
+    ["module-resolver", {
+      "root": ["./src"],
+      "alias": {
+        "createSaga": "./src/helpers/common/createSaga.js"
+      }
+    }]
+  ]
 }
