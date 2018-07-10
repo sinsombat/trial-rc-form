@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import routes from './routes';
 import { renderToString } from 'react-dom/server';
 // import qs from 'qs';
-import Html from './client/Html';
+import document from './document';
 import configureStore from './store/configuredStore';
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
@@ -46,7 +46,7 @@ server
         res,
         routes,
         assets,
-        document: Html,
+        document,
         customRenderer,
       });
       res.send(html);
