@@ -1,58 +1,62 @@
-import React from 'react';
-import express from 'express';
-import { render } from '@jaredpalmer/after';
-import { Provider } from 'react-redux';
-import routes from './routes';
-import { renderToString } from 'react-dom/server';
-// import qs from 'qs';
-import document from './document';
-import configureStore from './store/configuredStore';
-const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+import React from 'react'
+import express from 'express'
+import { render } from '@jaredpalmer/after'
+import { Provider as StoreProvider } from 'react-redux'
+import { renderToString } from 'react-dom/server'
+import { ConnectedRouter } from 'connected-react-router/immutable'
+import configureStore from './store/configureStore'
 
-const server = express();
+import routes from './routes'
+import Document from './Document'
+
+const assets = require(process.env.RAZZLE_ASSETS_MANIFEST)
+
+const server = express()
+
 server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
   .get('/*', async (req, res) => {
-    try {
-      // Read the counter from the request, if provided
-      // const params = qs.parse(req.query);
-      // console.log(req)
-      // console.log(res)
-      // const counter = parseInt(params.counter, 10) || 0;
+    const { store, history, runSaga, closeSaga } = configureStore()
 
-      // Compile initial state
-      const preloadedState = {};
+    const customRenderer = (node) => {
+      const App = (
+        <StoreProvider store={ store } >
+          <ConnectedRouter history={ history }>
+            {node}
+          </ConnectedRouter>
+        </StoreProvider>
+      )
 
-      // Create a new Redux store instance
-      const store = configureStore(preloadedState);
+        const serverState = store.getState({})
+        const html = renderToString(App)
 
-      // Grab the initial state from our Redux store
-      const serverState = store.getState();
-
-      const customRenderer = (node) => {
-        const App = <Provider store={store}>{node}</Provider>;
         return {
-          html: renderToString(App),
-          // Anything else you add here will be made available
-          // within document's this.props
-          // e.g a redux store...
-          serverState,
-        };
-      };
-
+          html,
+          serverState
+        }
+      }
+    try {
+      const sagaTask = await runSaga()
       const html = await render({
         req,
         res,
         routes,
         assets,
-        document,
         customRenderer,
-      });
-      res.send(html);
+        document: Document,
+        store
+      })
+
+      closeSaga()
+
+      await sagaTask.done
+
+      res.send(html)
     } catch (error) {
-      res.json(error);
+      console.error(error)
+      res.json(error)
     }
-  });
+  })
 
 export default server;

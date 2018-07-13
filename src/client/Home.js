@@ -41,7 +41,7 @@ class Home extends React.Component {
 
 
 const mapStateToProps = state => ({
-  count: state.counter.count,
+  count: state.getIn(['counter', 'count'], 1),
 });
 
 function mapDispatchToProps(dispatch) {

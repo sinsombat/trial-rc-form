@@ -34,7 +34,7 @@ module.exports = (config, webpack) => {
               modifyVars: antdTheme
             }
           }]
-        },
+        }
       ],
     },
     plugins: [
