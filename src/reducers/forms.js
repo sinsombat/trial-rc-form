@@ -1,9 +1,10 @@
+import { fromJS } from 'immutable'
 import { ADD_FORM, UPDATE_FORM, REMOVE_FORM } from '../actions';
 
-const initialState = {
+const initialState = fromJS({
   key : 0,
   forms : []
-}
+})
 
 function remove(array, element) {
   return array.filter(e => e.key !== element);

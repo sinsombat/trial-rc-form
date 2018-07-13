@@ -13,9 +13,8 @@ export const decrement = () => ({
   type: DECREMENT_COUNTER,
 });
 
-export const decrementSuccess = (count) => ({
+export const decrementSuccess = () => ({
   type: DECREMENT_COUNTER_SUCCESS,
-  count
 });
 
 export const incrementAsync = (delay = 1000) => dispatch => {

@@ -1,24 +1,17 @@
-import { INCREMENT_COUNTER, DECREMENT_COUNTER, DECREMENT_COUNTER_SUCCESS } from '../actions';
+import { fromJS } from 'immutable'
+import { INCREMENT_COUNTER, DECREMENT_COUNTER_SUCCESS } from '../actions';
 
-const initialState = {
+const initialState = fromJS({
   count : 0
-}
+})
 
-export default (state = {...initialState}, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case INCREMENT_COUNTER:
-      return { 
-        count: state.count + 1 
-      }
-    case DECREMENT_COUNTER:
-      return {
-        ...state
-      }
+      return state.set('count', state.get('count') + 1)
     case DECREMENT_COUNTER_SUCCESS:
-      state.count -= action.count
-      return {
-        ...state
-      }
+      
+      return state.set('count', state.get('count') - 1)
     default:
       return state;
   }

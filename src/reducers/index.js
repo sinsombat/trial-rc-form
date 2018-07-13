@@ -1,10 +1,9 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from 'redux-immutable'
+
 import counter from './counter';
 import multiForm from './forms'; 
 
-const rootReducer = combineReducers({
+export default combineReducers({
   counter,
-  multiForm,
-});
-
-export default rootReducer;
+  multiForm
+})

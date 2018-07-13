@@ -1,10 +1,7 @@
-import { all, call } from 'redux-saga/effects'
+import { call } from 'redux-saga/effects'
+import createSaga from 'createSaga'
 import counterSaga from './counter'
 
-const sagas = [
-  call(counterSaga),
-]
-
-export default function* mainSaga() {
-  yield all(sagas)
-}
+export default createSaga([
+  call(counterSaga)
+])
